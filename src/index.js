@@ -14,9 +14,9 @@ const port = process.env.PORT || 3000
 //     }
 // })
 
-app.use((req,res,next) => {
-    res.status(503).send('This site is currently under maintainance')
-})
+// app.use((req,res,next) => {
+//     res.status(503).send('This site is currently under maintainance')
+// })
 
 app.use(express.json())
 app.use(userRouter)
