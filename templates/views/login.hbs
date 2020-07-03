@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>My Task Manager</title>
+    <link rel="icon" href="">
+    <link rel="stylesheet" href="/css/styles.css">
+  
+</head>
+
+<body>
+    <div class="maincontent">
+        {{>header}}
+
+    <form method="POST" enctype="multipart/form-data" action="/users/login">
+        <p>Email:</p> <input type="text" name="name"/>
+        <p>Password:</p> <input type="text" name="password"/>
+        <input type="submit" value="Submit"/>
+    </form>   
+
+
+    </div>
+    {{>footer}}
+
+
+</body>
+</html>

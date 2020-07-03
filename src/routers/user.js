@@ -1,20 +1,36 @@
+const path = require('path')
+const hbs = require('hbs')
 const express = require('express')
 const User = require('../models/users')
 const auth = require('../middleware/auth')
 const multer = require('multer')
 const sharp = require('sharp')
+const bodyParser = require('body-parser')
 const router = new express.Router()
 
-router.post('/users', async (req,res) => {
+let uploads = multer();
+
+router.get('',(req, res) => {
+    res.render('index', {
+        title: 'Task Manager',
+        name: 'Shivangi Tanwar'
+    })
+})
+
+//Create user
+router.get('/users', async (req,res) => {
+    res.render('signup')
+})
+
+
+router.post('/users', uploads.fields([]), async (req,res) => {
     const user = new User(req.body)
 
     try{
         const created = await user.save()
         if(created){
-        // res.status(201).send(.user)
-
         const token = await created.generateAuthToken()
-        res.status(201).send({created, token})
+        res.status(201).redirect('/tasks')
         }
     }      
     catch (e) {
@@ -22,11 +38,17 @@ router.post('/users', async (req,res) => {
     }
 })
 
-router.post('/users/login', async (req,res) => {
+//Login user
+router.get('/users/login', async (req,res) => {
+    res.render('login')
+})
+
+router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
-        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const user = await User.findByCredentials(req.body.name, req.body.password)
         const token = await user.generateAuthToken()
-        res.send({user, token})
+        console.log(user)
+        res.send({user,token})
     } catch (e) {
         res.status(400).send(e)
     }

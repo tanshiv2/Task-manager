@@ -1,4 +1,6 @@
 const express = require('express')
+const path = require('path')
+const hbs = require('hbs')
 require('./db/mongoose')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
@@ -6,15 +8,20 @@ const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT
 
-const multer = require('multer')
-const upload = multer({
-    dest:'images'
-})
-app.post('/upload', upload.single('upload'),(req,res) => {
-    res.send()
-})
-
 app.use(express.json())
+
+//Define paths for express config
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
+
+//Setup handlebars engine and views location
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
+
+//Setup static directory to serve
+app.use(express.static(path.join(__dirname,'../public')))
+
 app.use(userRouter)
 app.use(taskRouter)
 
