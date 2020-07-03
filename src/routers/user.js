@@ -7,8 +7,10 @@ const multer = require('multer')
 const sharp = require('sharp')
 const bodyParser = require('body-parser')
 const router = new express.Router()
+cookieParser = require('cookie-parser')
+router.use(cookieParser())
 
-let uploads = multer();
+let uploads = multer()
 
 router.get('',(req, res) => {
     res.render('index', {
@@ -43,12 +45,44 @@ router.get('/users/login', async (req,res) => {
     res.render('login')
 })
 
+
+// var cookie = req.cookies.jwtToken;
+//   if (!cookie) {
+//     res.cookie('jwtToken', theJwtTokenValue, { maxAge: 900000, httpOnly: true });
+//   } else {
+//     console.log('let's check that this is a valid cookie');
+//     // send cookie along to the validation functions...
+//   }
+
+// const useit = (theJwtTokenValue) = function (req, res, next) {
+//     var cookie = req.cookies.jwtToken;
+//     if (!cookie) {
+//       res.cookie('jwtToken', theJwtTokenValue, { maxAge: 900000, httpOnly: true })
+//     } else {
+//       console.log('lets check that this is a valid cookie')
+//       // send cookie along to the validation functions...
+//     }
+//     next()
+//   }
+
 router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
         const user = await User.findByCredentials(req.body.name, req.body.password)
         const token = await user.generateAuthToken()
+        // useit(token)
+        const cookie = req.cookies.jwtToken;
+        console.log(cookie)
+        if (!cookie) {
+            res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
+        } else {
+            console.log('lets check that this is a valid cookie');
+            // send cookie along to the validation functions...
+        }
         console.log(user)
-        res.send({user,token})
+        // res.send({user,token})
+        console.log(req.cookies.jwtToken)
+        res.redirect('/tasks')
+
     } catch (e) {
         res.status(400).send(e)
     }
