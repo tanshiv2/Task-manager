@@ -7,7 +7,8 @@ const multer = require('multer')
 const sharp = require('sharp')
 const bodyParser = require('body-parser')
 const router = new express.Router()
-cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
+const { request } = require('http')
 router.use(cookieParser())
 
 let uploads = multer()
@@ -21,7 +22,13 @@ router.get('',(req, res) => {
 
 //Create user
 router.get('/users', async (req,res) => {
+    cookie = req.cookies.jwtToken
+    if(!cookie){
     res.render('signup')
+    }
+    else{
+        res.redirect('/tasks')
+    }
 })
 
 
@@ -32,6 +39,7 @@ router.post('/users', uploads.fields([]), async (req,res) => {
         const created = await user.save()
         if(created){
         const token = await created.generateAuthToken()
+        await res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
         res.status(201).redirect('/tasks')
         }
     }      
@@ -41,45 +49,21 @@ router.post('/users', uploads.fields([]), async (req,res) => {
 })
 
 //Login user
-router.get('/users/login', async (req,res) => {
+router.get('/login', async (req,res) => {
+    cookie = req.cookies.jwtToken
+    if(!cookie){
     res.render('login')
+    }
+    else{
+        res.redirect('/tasks')
+    }
 })
-
-
-// var cookie = req.cookies.jwtToken;
-//   if (!cookie) {
-//     res.cookie('jwtToken', theJwtTokenValue, { maxAge: 900000, httpOnly: true });
-//   } else {
-//     console.log('let's check that this is a valid cookie');
-//     // send cookie along to the validation functions...
-//   }
-
-// const useit = (theJwtTokenValue) = function (req, res, next) {
-//     var cookie = req.cookies.jwtToken;
-//     if (!cookie) {
-//       res.cookie('jwtToken', theJwtTokenValue, { maxAge: 900000, httpOnly: true })
-//     } else {
-//       console.log('lets check that this is a valid cookie')
-//       // send cookie along to the validation functions...
-//     }
-//     next()
-//   }
 
 router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
         const user = await User.findByCredentials(req.body.name, req.body.password)
         const token = await user.generateAuthToken()
-        // useit(token)
-        const cookie = req.cookies.jwtToken;
-        console.log(cookie)
-        if (!cookie) {
-            res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
-        } else {
-            console.log('lets check that this is a valid cookie');
-            // send cookie along to the validation functions...
-        }
-        console.log(user)
-        // res.send({user,token})
+        await res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
         console.log(req.cookies.jwtToken)
         res.redirect('/tasks')
 
@@ -92,14 +76,24 @@ router.get('/users/me', auth, async (req,res) => {
     res.send(req.user)
 })
 
+//Logout users
+router.get('/logout', async (req,res) => {
+    const cookie = req.cookies.jwtToken
+    if(!cookie){
+        res.redirect('/login')
+    } else {
+        res.render('logout')
+    }
+})
 router.post('/users/logout', auth, async (req,res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         })
         await req.user.save()
-
-        res.send()
+        res.clearCookie('jwtToken');
+        res.send({success: 'Logged out successfuly'})
+        // res.redirect('/users/login')
     } catch (e) {
         res.send(500).send()
     }
