@@ -5,7 +5,6 @@ const User = require('../models/users')
 const auth = require('../middleware/auth')
 const multer = require('multer')
 const sharp = require('sharp')
-const bodyParser = require('body-parser')
 const router = new express.Router()
 const cookieParser = require('cookie-parser')
 const { request } = require('http')
@@ -39,7 +38,7 @@ router.post('/users', uploads.fields([]), async (req,res) => {
         const created = await user.save()
         if(created){
         const token = await created.generateAuthToken()
-        await res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
+        await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
         res.status(201).redirect('/tasks')
         }
     }      
@@ -63,7 +62,7 @@ router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
         const user = await User.findByCredentials(req.body.name, req.body.password)
         const token = await user.generateAuthToken()
-        await res.cookie('jwtToken', token, { maxAge: 900000, httpOnly: true });
+        await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
         console.log(req.cookies.jwtToken)
         res.redirect('/tasks')
 

@@ -21,7 +21,7 @@ footer {
     margin-top: 16px;
     padding: 18px 0;
     text-align:center;
-    background-color: #99ccff;
+    background-color: #660000;
 }
 
 header {
@@ -88,6 +88,7 @@ p {
 
 form {
     text-align: center;
+    color: black;
 }
 
 img {

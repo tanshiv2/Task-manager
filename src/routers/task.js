@@ -1,18 +1,25 @@
 const express = require('express')
 const Task = require('../models/tasks')
+const multer = require('multer')
 
 const auth = require('../middleware/auth')
 
 const router = new express.Router()
 
-router.post('/tasks', auth, async (req,res) => {
+let uploads = multer()
+
+router.get('/addtask', auth, async (req,res) => {
+    res.render('addTask')
+})
+
+router.post('/tasks', auth, uploads.fields([]), async (req,res) => {
     const task = new Task({
         ...req.body,
         owner: req.user._id
     })
     try{
         task.save()
-        res.status(201).send(task)
+        res.status(201).render('tasks')
     } catch (e) {
         res.status(400).send(e)
     }
@@ -23,6 +30,7 @@ router.post('/tasks', auth, async (req,res) => {
 //GET /tasks?sortBy=createdAt:desc
 
 router.get('/tasks', auth, async (req,res) => {
+
     const match = {}
     const sort = {}
 
@@ -35,6 +43,7 @@ router.get('/tasks', auth, async (req,res) => {
         sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
     }
     try{
+
         const user = await req.user
         await user.populate({
             path: 'tasks',
@@ -45,13 +54,14 @@ router.get('/tasks', auth, async (req,res) => {
                 sort
             }
         }).execPopulate()
-        res.send(user.tasks)
+        res.render('tasks', { tasks: user.tasks})
+        // res.send(user.tasks)
     } catch (e) {
         res.status(500).send(e)
     }
 })
 
-router.get('/tasks/:id', auth, async (req,res) => {
+router.get('/tasks/:id',auth, async (req,res) => {
     const _id = req.params.id
 
     try {
