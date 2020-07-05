@@ -19,7 +19,7 @@ router.post('/tasks', auth, uploads.fields([]), async (req,res) => {
     })
     try{
         task.save()
-        res.status(201).render('tasks')
+        res.status(201).redirect('/tasks')
     } catch (e) {
         res.status(400).send(e)
     }
@@ -54,8 +54,13 @@ router.get('/tasks', auth, async (req,res) => {
                 sort
             }
         }).execPopulate()
-        res.render('tasks', { tasks: user.tasks})
-        // res.send(user.tasks)
+        let arr = []
+        const tasksarray = user.tasks
+        tasksarray.forEach((task) => {
+            task = JSON.stringify(task)
+            arr.push(task)
+        })
+        res.render('tasks', {taskss :arr})
     } catch (e) {
         res.status(500).send(e)
     }

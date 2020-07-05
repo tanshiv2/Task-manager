@@ -1,1 +1,2 @@
-document.querySelector('form').submit();
+
+

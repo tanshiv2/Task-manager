@@ -6,6 +6,7 @@
     <title>My Task Manager</title>
     <link rel="icon" href="">
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
   
 </head>
 
@@ -13,12 +14,27 @@
     <div class="maincontent">
         {{>headerUser}}
 
-    <p>{{tasks}}</p>
+    <div class="tasks">
+        <p id="tasks">{{taskss}} </p>
+
+    </div>
 
    </div>
     {{>footer}}
 
-    <script src="/js/app.js"></script>
+    {{!-- <script src="/js/app.js"> --}}
+    <script>
+        const real = document.querySelector('#tasks')
+        var str = real.textContent
+        //var item = str
+        console.log(str.slice(str.indexOf('{'), str.indexOf('}')+1))
+        var item = JSON.parse(str.slice(str.indexOf('{'), str.indexOf('}')+1))
+        str = str.substring(str.indexOf('}') + 2, str.length);
+        //var itemm = JSON.parse(item);
+        console.log(item)
+        str = JSON.parse(str)
+        console.log(str)
+    </script>
 
 </body>
 </html>
