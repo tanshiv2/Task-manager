@@ -12,31 +12,6 @@ const makeArr = (str) => {
     return arr
 }
 
-// const makeDiv = (desc,completed,createdAt) => {
-//     const Box = document.createElement('div')
-//     Box.setAttribute('class', 'task')
-//     var field = document.createElement('div')
-//     field.setAttribute('id', 'desc')
-//     field.textContent = desc
-//     // const p = document.createElement('h4')
-//     // p.textContent = desc
-//     Box.appendChild(field)
-//     field = document.createElement('div')
-//     if(!completed){
-//         // field.setAttribute('id','red')
-//         Box.classList.add('red')
-//     } else {
-//     // field.setAttribute('id', 'green')
-//         Box.classList.add('green')
-//     }
-//     field.textContent = completed
-//     Box.appendChild(field)
-//     field = document.createElement('div')
-//     field.setAttribute('id', 'created')
-//     field.textContent = createdAt
-//     Box.appendChild(field)
-//     return Box
-// }
 const timeCreated = (createdAt) => {
     const createdAt_ = new Date(createdAt)
     const currTime = new Date()
@@ -69,8 +44,23 @@ const timeCreated = (createdAt) => {
     }
 }
 
+const dueDate = (due) => {
+    const dateTime = new Date(due)
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const dueDate = dateTime.getDate() + ' ' + monthNames[dateTime.getMonth()]
+    const set = new Date()
+    set.setMonth(dateTime.getMonth())
+    set.setDate(dateTime.getDate())
+    console.log(dueDate)
+    console.log('set' + set)
+    const dueTime = dateTime.getHours() + ':' + dateTime.getMinutes()
+    console.log(dueTime)
+    return dueDate + ' ' + dueTime
+}
 
-const makeDiv = (desc,completed,createdAt) => {
+
+const makeDiv = (desc,completed,due,createdAt) => {
     const Box = document.createElement('div')
     Box.setAttribute('class', 'task')
     const left = document.createElement('div')
@@ -83,7 +73,14 @@ const makeDiv = (desc,completed,createdAt) => {
     field.textContent = desc
     left.appendChild(field)
 
+
+    var field = document.createElement('div')
+    field.setAttribute('id', 'due')
+    field.textContent = 'Due: ' + dueDate(due)
+    left.appendChild(field)
+
     field = document.createElement('div')
+    field.setAttribute('id', 'completed')
     if(!completed){
         Box.classList.add('red')
         field.textContent = 'Pending'
@@ -107,7 +104,7 @@ const makeDiv = (desc,completed,createdAt) => {
 const displayTasks = (arr) => {
     const display = document.querySelector('#display')
     arr.forEach((task) => {
-        const Box = makeDiv(task.description, task.completed, task.createdAt)
+        const Box = makeDiv(task.description, task.completed, task.due, task.createdAt)
         display.appendChild(Box)
                 
     })
@@ -115,4 +112,5 @@ const displayTasks = (arr) => {
 
 const arr = makeArr(str)
 displayTasks(arr)
-// console.log(arr)
+
+

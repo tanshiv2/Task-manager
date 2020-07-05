@@ -28,10 +28,11 @@ header {
     /* background-color: #99ccff; */
     background-color: #660000;
     /* text-align: center; */
-    /* margin-top: 16px; */
-    margin-bottom: 0 auto;
-    margin-right: 0 px;
-    /* padding-bottom: 16px; */
+    margin-top: 0px;
+    margin-bottom: 8px;
+    margin-right: 0px;
+    padding-top:9px;
+    padding-bottom: 8px;
 }
 
 /* h1 {
@@ -46,22 +47,32 @@ header {
     font-family: "Helvetica";
     margin-top: 0;
     margin-right: 0;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
     margin-left: 20px;
-    padding-top:10px;
-    padding-bottom:10px;
-    max-width: 300px;
+    /* padding-top:10px;
+    padding-bottom:10px; */
+    width: 60%;
 }
 
-/* h2,h3 {
-    text-align:center
-} */
-a {
+.nav{
+    font-family: "Helvetica";
+    margin-top: 0;
+    margin-right: 0;
+    /* margin-bottom: 16px; */
+    margin-left: 20px;
+    /* padding-top:10px;
+    padding-bottom:10px; */
+}
+
+
+a{
     text-align: right;
     color: #ffffff;
     margin-right: 16px;
     text-decoration: none;
 }
+
+
 
 input {
     border: 1px solid #cccccc;
@@ -96,6 +107,10 @@ img {
     height: 20px;
 }
 
+.title{
+    float:left;
+}
+
 #display {
     color: black;
     margin-left: 12.5%;
@@ -106,6 +121,7 @@ img {
 .task {
     margin: 10px 10px;
     padding:10px;
+    overflow:hidden;
 }   
 
 .red{
@@ -127,8 +143,19 @@ img {
     float: left;
 }
 
-
+.add {
+    float:right
+}
 
 #tasks{
     color: white;
+}
+
+#desc, #due{
+    position: relative;
+}
+
+#completed, #created {
+    position: relative;
+    color:white;
 }

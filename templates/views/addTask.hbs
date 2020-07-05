@@ -17,9 +17,9 @@
         <p>Description:</p> 
         <input type="text" name="description" required="true"/>
         <p>Completed:</p> 
-        <input type="radio" name="completed" value="true"/>
+        <input type="radio" name="completed" value="true" id="yes" onclick="myTrue()"/>
         <label for="true">Yes</label>
-        <input type="radio" name="completed" value="false"/>
+        <input type="radio" name="completed" value="false" onclick="myFalse()"/>
         <label for="false">No<br>
 
         <input type="submit" value="Submit"/>
@@ -28,7 +28,30 @@
    </div>
     {{>footer}}
 
-    {{!-- <script src="/js/app.js"></script> --}}
+    <script>
+        const myFalse = () => {
+            if(!document.getElementById('due')){
+            const form = document.querySelector('form')
+            const dueDate = document.createElement('input')
+            dueDate.setAttribute('type', 'datetime-local')
+            dueDate.setAttribute('name', 'due')
+            dueDate.setAttribute('id', 'due')
+            const label = document.createElement('p')
+            label.setAttribute('id', 'duelabel')
+            label.textContent = 'Due date: '
+            
+            form.appendChild(label)
+            form.appendChild(dueDate)
+            }
+        }
+
+        const myTrue = () => {
+            if(document.getElementById('due')){
+                document.querySelector('form').removeChild(document.getElementById('due'))
+                document.querySelector('form').removeChild(document.getElementById('duelabel'))
+            }
+        }
+    </script>
 
 </body>
 </html>
