@@ -54,13 +54,14 @@ router.get('/tasks', auth, async (req,res) => {
                 sort
             }
         }).execPopulate()
+        const numberof = parseInt(req.query.limit)
         let arr = []
         const tasksarray = user.tasks
         tasksarray.forEach((task) => {
             task = JSON.stringify(task)
             arr.push(task)
         })
-        res.render('tasks', {taskss :arr})
+        res.render('tasks', {taskss: arr, number: numberof})
     } catch (e) {
         res.status(500).send(e)
     }

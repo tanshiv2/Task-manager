@@ -14,7 +14,7 @@
     <div class="maincontent">
         {{>headerUser}}
 
-    <div class="tasks">
+    <div class="tasks" id="display">
         <p id="tasks">{{taskss}} </p>
 
     </div>
@@ -22,18 +22,7 @@
    </div>
     {{>footer}}
 
-    {{!-- <script src="/js/app.js"> --}}
-    <script>
-        const real = document.querySelector('#tasks')
-        var str = real.textContent
-        //var item = str
-        console.log(str.slice(str.indexOf('{'), str.indexOf('}')+1))
-        var item = JSON.parse(str.slice(str.indexOf('{'), str.indexOf('}')+1))
-        str = str.substring(str.indexOf('}') + 2, str.length);
-        //var itemm = JSON.parse(item);
-        console.log(item)
-        str = JSON.parse(str)
-        console.log(str)
+    <script src="/js/app.js">
     </script>
 
 </body>

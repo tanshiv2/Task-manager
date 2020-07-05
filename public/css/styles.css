@@ -93,5 +93,42 @@ form {
 
 img {
     width: 20px;
-    height: 20px
+    height: 20px;
+}
+
+#display {
+    color: black;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    min-width: 75%;
+}
+
+.task {
+    margin: 10px 10px;
+    padding:10px;
+}   
+
+.red{
+    background-color: rgba(255, 0, 0, 0.8);
+ 
+}
+
+.green{
+    background-color: rgba(0, 153, 0, 0.8);
+}
+
+#desc{
+    font-size: 30px;
+    font-family: 'helvetica';
+}
+
+.left{
+    width: 70%;
+    float: left;
+}
+
+
+
+#tasks{
+    color: white;
 }
