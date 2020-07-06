@@ -4,7 +4,7 @@ body {
     /* max-width: 900px; */
     margin: 0 auto;
 
-    background-color: #FFFFFF;
+    background-color: #262626;
 
     display:flex;
     flex-direction: column;
@@ -68,11 +68,13 @@ header {
 a{
     text-align: right;
     color: #ffffff;
-    margin-right: 16px;
+    margin-right: 10px;
     text-decoration: none;
 }
 
-
+.images a{
+    margin-right: 0px;
+}
 
 input {
     border: 1px solid #cccccc;
@@ -107,6 +109,12 @@ img {
     height: 20px;
 }
 
+.images img{
+    width: 5%;
+    height: 5%;
+    padding-right: 1.5%
+}
+
 .title{
     float:left;
 }
@@ -122,6 +130,7 @@ img {
     margin: 10px 10px;
     padding:10px;
     overflow:hidden;
+    border-radius: 5px;
 }   
 
 .red{
@@ -139,8 +148,12 @@ img {
 }
 
 .left{
-    width: 70%;
+    width: 60%;
     float: left;
+}
+.right{
+    float:left;
+    width:20%;
 }
 
 .add {

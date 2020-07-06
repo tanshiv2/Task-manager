@@ -81,14 +81,27 @@ const makeDiv = (desc,completed,due,createdAt) => {
 
     field = document.createElement('div')
     field.setAttribute('id', 'completed')
+
+    const anchor = document.createElement('a')
+    const anchor1 = document.createElement('a')
+    const anchor2 = document.createElement('a')
+
+    const update = document.createElement('img')
+
     if(!completed){
         Box.classList.add('red')
         field.textContent = 'Pending'
+        update.setAttribute('src','/images/markdone.png')
     } else {
         Box.classList.add('green')
         field.textContent = 'Done'
+        update.setAttribute('src','/images/marknotdone.png')
     }
     right.appendChild(field)
+
+    anchor.setAttribute('href','/tasks')
+    anchor1.setAttribute('href','/tasks/modify')
+    anchor2.setAttribute('href','/tasks')
 
     field = document.createElement('div')
     field.setAttribute('id', 'created')
@@ -96,8 +109,27 @@ const makeDiv = (desc,completed,due,createdAt) => {
     // field.textContent = createdAt
     right.appendChild(field)
 
+    const icons = document.createElement('div')
+    icons.classList.add('images')
+
+    const modify = document.createElement('img')
+    modify.setAttribute('src','/images/modify.png')
+
+    const del = document.createElement('img')
+    del.setAttribute('src','/images/delete.png')
+
+   
+    anchor.appendChild(update)
+    anchor1.appendChild(modify)
+    anchor2.appendChild(del)
+
+    icons.appendChild(anchor)
+    icons.appendChild(anchor1)
+    icons.appendChild(anchor2)
+
     Box.appendChild(left)
     Box.appendChild(right)
+    Box.appendChild(icons)
     return Box
 }
 
@@ -112,5 +144,38 @@ const displayTasks = (arr) => {
 
 const arr = makeArr(str)
 displayTasks(arr)
+
+
+const fetchid = () => fetch('/tasks/5f021eedef0c4251206ebb75', {method: 'PATCH', body: JSON.stringify({
+    completed: false
+    }),
+    headers: {
+    "Content-type": "application/json; charset=UTF-8"
+    }}).then(response => response.json())
+
+fetchid()
+
+
+const applyAction = () => {
+    const action = document.querySelector('img')
+    action.addEventListener("click", function (fetch,meth) {
+    var fetch
+    var meth
+    if(action.src == '/images/marknotdone.png'){
+        fetch = false
+        meth = 'PATCH'
+    } else if(action.src == '/images/markdone.png'){
+        fetch = true
+        meth = 'PATCH'
+    } else if(action.src == '/images/delete.png'){
+        meth = 'DELETE'
+    } else {
+        meth = 'PATCH'
+    }
+})
+}
+
+applyAction()
+
 
 
