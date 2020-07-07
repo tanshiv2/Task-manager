@@ -5,7 +5,6 @@ real.textContent = ''
 const makeArr = (str) => {
     let arr = []
     while(str!=''){
-        //JSON.parse(str.slice(str.indexOf('{'), str.indexOf('}')+1))
         arr.push(JSON.parse(str.slice(str.indexOf('{'), str.indexOf('}')+1)))
         str = str.substring(str.indexOf('}') + 2, str.length);
     }
@@ -15,9 +14,9 @@ const makeArr = (str) => {
 const timeCreated = (createdAt) => {
     const createdAt_ = new Date(createdAt)
     const currTime = new Date()
-    console.log(createdAt)
+    // console.log(createdAt)
     const t = currTime - createdAt_;
-    console.log(currTime)
+    // console.log(currTime)
     var days = Math.floor(t / (1000 * 60 * 60 * 24));
 
     if(days<1){
@@ -52,15 +51,15 @@ const dueDate = (due) => {
     const set = new Date()
     set.setMonth(dateTime.getMonth())
     set.setDate(dateTime.getDate())
-    console.log(dueDate)
-    console.log('set' + set)
+    // console.log(dueDate)
+    // console.log('set' + set)
     const dueTime = dateTime.getHours() + ':' + dateTime.getMinutes()
-    console.log(dueTime)
+    // console.log(dueTime)
     return dueDate + ' ' + dueTime
 }
 
 
-const makeDiv = (desc,completed,due,createdAt) => {
+const makeDiv = (desc,completed,due,createdAt,id) => {
     const Box = document.createElement('div')
     Box.setAttribute('class', 'task')
     const left = document.createElement('div')
@@ -87,21 +86,33 @@ const makeDiv = (desc,completed,due,createdAt) => {
     const anchor2 = document.createElement('a')
 
     const update = document.createElement('img')
-
+    const pending = document.createElement('img')
     if(!completed){
         Box.classList.add('red')
         field.textContent = 'Pending'
+       
+        pending.setAttribute('src','/images/caution.png')
+        pending.setAttribute('id', 'small')
         update.setAttribute('src','/images/markdone.png')
     } else {
         Box.classList.add('green')
         field.textContent = 'Done'
+        pending.setAttribute('src','/images/done.png')
+        pending.setAttribute('id', 'small')
         update.setAttribute('src','/images/marknotdone.png')
     }
+    right.appendChild(pending)
     right.appendChild(field)
 
-    anchor.setAttribute('href','/tasks')
-    anchor1.setAttribute('href','/tasks/modify')
-    anchor2.setAttribute('href','/tasks')
+    update.setAttribute('id', id)
+
+    anchor.setAttribute('href','')
+    anchor1.setAttribute('href','')
+    anchor2.setAttribute('href','')
+
+    anchor.setAttribute('id','update')
+    anchor1.setAttribute('id','modify')
+    anchor2.setAttribute('id','delete')
 
     field = document.createElement('div')
     field.setAttribute('id', 'created')
@@ -114,10 +125,11 @@ const makeDiv = (desc,completed,due,createdAt) => {
 
     const modify = document.createElement('img')
     modify.setAttribute('src','/images/modify.png')
+    modify.setAttribute('id', id)
 
     const del = document.createElement('img')
-    del.setAttribute('src','/images/delete.png')
-
+    del.setAttribute('src','/images/delete1.webp')
+    del.setAttribute('id', id)
    
     anchor.appendChild(update)
     anchor1.appendChild(modify)
@@ -136,7 +148,7 @@ const makeDiv = (desc,completed,due,createdAt) => {
 const displayTasks = (arr) => {
     const display = document.querySelector('#display')
     arr.forEach((task) => {
-        const Box = makeDiv(task.description, task.completed, task.due, task.createdAt)
+        const Box = makeDiv(task.description, task.completed, task.due, task.createdAt, task._id)
         display.appendChild(Box)
                 
     })
@@ -145,34 +157,90 @@ const displayTasks = (arr) => {
 const arr = makeArr(str)
 displayTasks(arr)
 
+// const fetchdelete = (tid) => {
+//     console.log('id' + tid)
+//     fetch('/tasks/'+ tid, { method: 'DELETE', headers: {
+//         "Content-type": "application/json; charset=UTF-8"
+//         }}).then(response => response.json())
+// }
 
-const fetchid = () => fetch('/tasks/5f021eedef0c4251206ebb75', {method: 'PATCH', body: JSON.stringify({
-    completed: false
+const fetchdelete = (id) => {
+    fetch('/tasks/'+ id, { method: 'DELETE'})
+}
+
+const fetchpatch = (bool,id) => {fetch('/tasks/' + id, {method:'PATCH', body: JSON.stringify({
+    completed: bool
     }),
     headers: {
     "Content-type": "application/json; charset=UTF-8"
     }}).then(response => response.json())
+}
 
-fetchid()
+// const fetchpatch = ()
 
 
 const applyAction = () => {
-    const action = document.querySelector('img')
-    action.addEventListener("click", function (fetch,meth) {
-    var fetch
-    var meth
-    if(action.src == '/images/marknotdone.png'){
-        fetch = false
-        meth = 'PATCH'
-    } else if(action.src == '/images/markdone.png'){
-        fetch = true
-        meth = 'PATCH'
-    } else if(action.src == '/images/delete.png'){
-        meth = 'DELETE'
-    } else {
-        meth = 'PATCH'
+    var act = []
+    act = document.getElementsByTagName('img')
+    console.log(act.length)
+    for ( var i = 0; i < act.length; i++) {
+        console.log(act[i].src)
+        act[i].addEventListener("click", function () {
+            var fetch = true
+            console.log(this.id)
+            // const task = document.getElementById(this.id)
+            if(this.src.endsWith("/images/marknotdone.png")){
+                console.log(this.src)
+                fetch = false
+                return fetchpatch(fetch,this.id)
+            }
+            else if(this.src.endsWith("/images/delete1.webp")){
+                    console.log('delete yaar')
+                    // const taskid = task.id
+                    // return fetchdelete('5f00895860ebfc7409972e11')
+                    fetchdelete(this.id)
+            } else if(this.src.endsWith("/images/markdone.png")){
+                // console.log(task.src)
+                fetch = true
+                return fetchpatch(fetch,this.id)
+            } 
+             else {
+                console.log('ye sahi hai')
+                console.log('donothing')
+            }
+        })
     }
-})
+
+    // act = document.getElementsByTagName('a')
+    // console.log(act.length)
+    // for ( var i = 0; i < act.length; i++) {
+    //     console.log(act[i].id)
+    //     act[i].addEventListener("click", function () {
+    //         var fetch = true
+    //         console.log(this.id)    
+    //         const task = document.getElementById(this.id)
+    //         var imgs = task.
+    //         if(task.id == "update"){
+    //             fetch = false
+    //             return fetchpatch(fetch,task.id)
+    //         }
+    //         else if(task.src.endsWith("/images/delete.png")){
+    //                 console.log('delete yaar')
+    //                 // const taskid = task.id
+    //                 // return fetchdelete('5f00895860ebfc7409972e11')
+    //                 fetch('/tasks/'+ task.id, { method: 'DELETE'})
+    //         } else if(task.src.endsWith("/images/markdone.png")){
+    //             console.log(task.src)
+    //             fetch = true
+    //             return fetchpatch(fetch,task.id)
+    //         } 
+    //          else {
+    //             console.log('ye sahi hai')
+    //             console.log('donothing')
+    //         }
+    //     })
+    // }
+
 }
 
 applyAction()
