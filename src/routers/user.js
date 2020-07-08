@@ -79,6 +79,14 @@ router.get('/users/me', auth, async (req,res) => {
         avatar: req.user.avatar})
 })
 
+router.get('/users/update', auth, async (req,res) => {
+    res.render('updateUser', {
+        user: req.user.name,
+        email: req.user.email,
+        age: req.user.age,
+        })
+})
+
 //Logout users
 router.get('/logout', async (req,res) => {
     const cookie = req.cookies.jwtToken
@@ -128,7 +136,7 @@ router.patch('/users/me', auth, async (req,res) => {
         })
 
         await req.user.save()
-        res.send(req.user)
+        res.redirect('/users/me')
     } catch (e) {
         res.status(400).send(e)
     }
@@ -137,7 +145,8 @@ router.patch('/users/me', auth, async (req,res) => {
 router.delete('/users/me', auth, async (req,res) => {
     try{
         await req.user.remove()
-        res.send(user)
+        // res.send(user)
+        res.redirect('/users/me')
     } catch (e) {
         res.status(500).send(e)
     }
