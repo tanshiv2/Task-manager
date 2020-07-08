@@ -117,7 +117,6 @@ const makeDiv = (desc,completed,due,createdAt,id) => {
     field = document.createElement('div')
     field.setAttribute('id', 'created')
     field.textContent = 'created ' + timeCreated(createdAt) + 'ago'
-    // field.textContent = createdAt
     right.appendChild(field)
 
     const icons = document.createElement('div')
@@ -157,13 +156,6 @@ const displayTasks = (arr) => {
 const arr = makeArr(str)
 displayTasks(arr)
 
-// const fetchdelete = (tid) => {
-//     console.log('id' + tid)
-//     fetch('/tasks/'+ tid, { method: 'DELETE', headers: {
-//         "Content-type": "application/json; charset=UTF-8"
-//         }}).then(response => response.json())
-// }
-
 const fetchdelete = (id) => {
     fetch('/tasks/'+ id, { method: 'DELETE'})
 }
@@ -176,9 +168,6 @@ const fetchpatch = (bool,id) => {fetch('/tasks/' + id, {method:'PATCH', body: JS
     }}).then(response => response.json())
 }
 
-// const fetchpatch = ()
-
-
 const applyAction = () => {
     var act = []
     act = document.getElementsByTagName('img')
@@ -188,7 +177,6 @@ const applyAction = () => {
         act[i].addEventListener("click", function () {
             var fetch = true
             console.log(this.id)
-            // const task = document.getElementById(this.id)
             if(this.src.endsWith("/images/marknotdone.png")){
                 console.log(this.src)
                 fetch = false
@@ -196,11 +184,8 @@ const applyAction = () => {
             }
             else if(this.src.endsWith("/images/delete1.webp")){
                     console.log('delete yaar')
-                    // const taskid = task.id
-                    // return fetchdelete('5f00895860ebfc7409972e11')
                     fetchdelete(this.id)
             } else if(this.src.endsWith("/images/markdone.png")){
-                // console.log(task.src)
                 fetch = true
                 return fetchpatch(fetch,this.id)
             } 
@@ -210,37 +195,6 @@ const applyAction = () => {
             }
         })
     }
-
-    // act = document.getElementsByTagName('a')
-    // console.log(act.length)
-    // for ( var i = 0; i < act.length; i++) {
-    //     console.log(act[i].id)
-    //     act[i].addEventListener("click", function () {
-    //         var fetch = true
-    //         console.log(this.id)    
-    //         const task = document.getElementById(this.id)
-    //         var imgs = task.
-    //         if(task.id == "update"){
-    //             fetch = false
-    //             return fetchpatch(fetch,task.id)
-    //         }
-    //         else if(task.src.endsWith("/images/delete.png")){
-    //                 console.log('delete yaar')
-    //                 // const taskid = task.id
-    //                 // return fetchdelete('5f00895860ebfc7409972e11')
-    //                 fetch('/tasks/'+ task.id, { method: 'DELETE'})
-    //         } else if(task.src.endsWith("/images/markdone.png")){
-    //             console.log(task.src)
-    //             fetch = true
-    //             return fetchpatch(fetch,task.id)
-    //         } 
-    //          else {
-    //             console.log('ye sahi hai')
-    //             console.log('donothing')
-    //         }
-    //     })
-    // }
-
 }
 
 applyAction()

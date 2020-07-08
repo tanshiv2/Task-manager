@@ -72,7 +72,11 @@ router.post('/users/login', uploads.fields([]), async (req,res) => {
 })
 
 router.get('/users/me', auth, async (req,res) => {
-    res.send(req.user)
+    res.render('user', {
+        user: req.user.name,
+        email: req.user.email,
+        age: req.user.age,
+        avatar: req.user.avatar})
 })
 
 //Logout users
@@ -169,19 +173,34 @@ router.delete('/users/me/avatar', auth, async (req,res) => {
     res.status(400).send({error: 'Failed to delete image'})
 })
 
-router.get('/users/:id/avatar', async (req,res) => {
+router.get('/users/me/avatar', auth, async (req,res) => {
     try{
-        const user = await User.findById(req.params.id)
-
+        const user = await User.findById(req.user.id)
         if(!user || !user.avatar){
             throw new Error()
         }
 
         res.set('Content-Type', 'image/png')
         res.send(user.avatar)
+        // res.render('avatar', {avatar: user.avatar})
     } catch (e) {
         res.status(404).send()
     }
 })
+
+// router.get('/users/:id/avatar', async (req,res) => {
+//     try{
+//         const user = await User.findById(req.params.id)
+
+//         if(!user || !user.avatar){
+//             throw new Error()
+//         }
+
+//         res.set('Content-Type', 'image/png')
+//         res.send(user.avatar)
+//     } catch (e) {
+//         res.status(404).send()
+//     }
+// })
 
 module.exports = router

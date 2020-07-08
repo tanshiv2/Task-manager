@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>My Task Manager</title>
+    <link rel="icon" href="">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  
+</head>
+
+<body>
+    <div class="maincontent">
+        {{>headerUser}}
+
+    <div class="userinfo" id="display">
+        <p id="name">{{user}}</p>
+        <hr>
+        <div class="inner">
+        <p id="email">{{email}} | {{age}} </p>
+        </div>
+        <div id="iframe">
+            <iframe id="myFrame" src="/users/me/avatar" height="250px" width="250px"></iframe>
+        </div>
+        <button class="opts upload" type="button"><a href="/tasks">Upload photo</a></button>
+        <div class="optionsu" id="options">
+        <button class="opts apart" type="button"><a href="/tasks">Update profile</a></button>
+                <button class="opts apart" type="button"><a href="/tasks?completed=true">Change password</a></button>
+        <button class="opts apart" type="button"><a href="/tasks?completed=false">Delete account</a></button>
+
+    </div>
+        
+    </div>
+
+    
+
+
+   </div>
+    {{>footer}}
+
+    <script>
+    </script>
+
+</body>
+</html>

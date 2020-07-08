@@ -64,7 +64,7 @@ router.get('/tasks', auth, async (req,res) => {
         // console.log(arr)
         res.render('tasks', {taskss: arr, number: numberof})
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).redirect('/login')
     }
 })
 
