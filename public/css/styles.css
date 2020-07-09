@@ -243,3 +243,81 @@ hr{
 .apart{
     margin-left:5%;
 }
+
+.labels{
+    width:40%;
+    float:left;
+}
+
+.labels p{
+    margin-left:60%;
+    min-width: 40%;
+    margin-right: 5%;
+    text-align: right;
+    font-family: Verdana;
+    font-size: 140%;
+    margin-top: 3%;
+    margin-bottom: 7%;
+}
+
+.text{
+    margin-left:0;
+    width:58%;
+    float:left;
+    text-align: left;
+    margin-left: 2%;
+    margin-bottom: 4%;
+}
+
+.text input{
+    float:left;
+    margin-bottom:2%;
+    margin-left: 0;
+    background-color: grey;
+    margin-right: 70%;
+}
+
+#submit{
+    width: 100%;
+    margin-bottom:3%;
+}
+
+#titles{
+    font-family: Arial;
+    font-size: 300%;
+    margin-bottom: 3%;
+    color: #800000;
+}
+
+.text textarea {
+    width: 50%;
+    height: 4em;
+        border: 1px solid #cccccc;
+        padding: 8px;
+        margin: 0 auto;
+        font-size: 20px;
+        background-color: grey;
+        margin-left:0;
+        text-align: left;
+    }
+
+#yes, #no{
+    margin-right: 0;
+}
+
+#true, #false{
+    width: 20%;
+}
+
+.yes{
+    padding-top:1%;
+    width: 17%;
+    float:left;
+    font-size: 140%;
+    font-family: Optima;
+    margin-bottom: 4%;
+}
+
+.addtask{
+    padding-top: 27%;
+}

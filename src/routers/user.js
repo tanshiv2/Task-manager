@@ -60,7 +60,7 @@ router.get('/login', async (req,res) => {
 
 router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
-        const user = await User.findByCredentials(req.body.name, req.body.password)
+        const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
         console.log(req.cookies.jwtToken)

@@ -12,22 +12,32 @@
 <body>
     <div class="maincontent">
         {{>header}}
+    <div class="userinfo" id="display">
+        <p class="inner" id="titles">Signup</p>
+
+    <div class="labels">
+        <p>Email:<span style="color:red">*</span></p>
+        <p>Name:<span style="color:red">*</span></p>
+        <p>Age:<span style="color: #999999">_</span></p>
+        <p>Password:<span style="color:red">*</span></p>
+    </div>
 
     <form method="POST" enctype="multipart/form-data" action="/users">
-        <p>Email:</p>
-        <input type="email" name="email"/>
+    <div class="text">
+        <input type="email" name="email" required/>
+        <input type="text" name="name" required/>
+        <input type="text" name="age" />
+        <input type="text" name="password" required/>
+    </div>
 
-        <p>Name:</p>
-        <input type="text" name="name"/>
+    <p>Already a user? <a href="/login" style="color:#800000"><u>Login</u></a></p>
 
-         <p>Age:</p>
-        <input type="text" name="age"/>
+    <div id="submit">
+        <input class="opts submitform" type="submit" value="Submit"/>
+    </div>
+    </form>
 
-        <p>Password:</p>
-        <input type="text" name="password"/>
-
-        <input type="submit" value="Submit"/>
-    </form>   
+    </div>
 
 
     </div>
