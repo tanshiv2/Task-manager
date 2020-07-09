@@ -94,9 +94,48 @@ const checkClick = () => {
     })}
 }
 
-
 deleter()
 
+// const patchavatar = () => { 
+//     fetch('/users/me/avatar' + id, {method:'PATCH', body: JSON.stringify({
+//         completed: bool
+//         }),
+//         headers: {
+//         "Content-type": "application/json; charset=UTF-8"
+//         }}).then(response => response.json())
+//     }
+
+
+const updatephoto = () => {
+    const buttonclick = document.getElementById('uploadphoto')
+    if(buttonclick){
+        buttonclick.addEventListener("click", function () {
+            const form = document.createElement('form')
+            form.method = "POST"
+            form.action = '/users/me/avatar'
+            form.setAttribute('enctype','multipart/form-data')
+            const selectfile = document.createElement('input')
+            selectfile.type = 'file'
+            selectfile.name = 'avatar'
+            selectfile.classList.add('opts')
+            const submit = document.createElement('input')
+            submit.type="submit"
+            
+            const display = document.getElementById("photoform")
+            form.appendChild(selectfile)
+            form.appendChild(submit)
+            display.appendChild(form)
+
+            // form.addEventListener('submit', (e) => {
+            //     e.preventDefault()
+            //     patchavatar()
+            
+        })
+    }
+}
+
+
+updatephoto()
 
 
 

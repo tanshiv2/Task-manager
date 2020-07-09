@@ -169,7 +169,7 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (req,res)=>
     const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer()
     req.user.avatar = buffer
     await req.user.save()
-    res.status(200).send()
+    res.status(200).redirect('/users/me')
 }, (error,req,res,next) => {
     res.status(400).send({error: error.message})
 })
@@ -193,7 +193,11 @@ router.get('/users/me/avatar', auth, async (req,res) => {
         res.send(user.avatar)
         // res.render('avatar', {avatar: user.avatar})
     } catch (e) {
-        res.status(404).send()
+        const url = 'http://simpleicon.com/wp-content/uploads/user1-256x256.png'
+        var image = new Buffer(url,'binary')
+        res.set('Content-Type', 'image/png')
+        res.send(image)
+        // res.status(404).send()
     }
 })
 
