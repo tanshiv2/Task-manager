@@ -138,5 +138,25 @@ const updatephoto = () => {
 updatephoto()
 
 
+const passchange = () => {
+    const passform = document.getElementById('passchange')
+    if(passform){
+        passform.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            const password = document.getElementById('password').value
+            const newpassword = document.getElementById('newpassword').value
+            fetch('/users/me', {method:'PATCH', body: JSON.stringify({
+                password,
+                newpassword
+                }),
+                headers: {
+                "Content-type": "application/json; charset=UTF-8"
+                }})
+        })
+    }
+}
 
 
+
+passchange()

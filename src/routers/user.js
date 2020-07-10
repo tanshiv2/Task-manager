@@ -201,19 +201,28 @@ router.get('/users/me/avatar', auth, async (req,res) => {
     }
 })
 
-// router.get('/users/:id/avatar', async (req,res) => {
-//     try{
-//         const user = await User.findById(req.params.id)
+router.get('/users/me/passchange', auth, async (req,res) => {
+    try{
+        res.render('passchange')
+    } catch {
+        res.render('/users/me', {msg: 'Current password is incorrect!'})
+    }
+})
 
-//         if(!user || !user.avatar){
-//             throw new Error()
-//         }
-
-//         res.set('Content-Type', 'image/png')
-//         res.send(user.avatar)
-//     } catch (e) {
-//         res.status(404).send()
-//     }
-// })
+router.post('/users/me/passchange', uploads.fields([]), auth, async (req,res) => {
+    console.log(req.user.email, req.body.password, req.body.newpassword)
+    try{
+        
+        const user = await User.findByCredentials(req.user.email, req.body.password)
+        user.password = req.body.newpassword
+        console.log(user.password)
+        await user.save()
+        await req.user.save()
+        console.log(user)
+        res.status(200).redirect('/users/me')
+    } catch (e) {
+        res.status(400).send(e)
+    }
+ })
 
 module.exports = router

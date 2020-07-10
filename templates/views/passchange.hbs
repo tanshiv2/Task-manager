@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>My Task Manager</title>
+    <link rel="icon" href="">
+    <link rel="stylesheet" href="/css/styles.css">
+  
+</head>
+
+<body>
+    <div class="maincontent">
+        {{>headerUser}}
+    
+        <div class="userinfo" id="display">
+        <p class="inner" id="titles">Change password</p>
+        
+    <div class="labels">
+        <p>Password:<span style="color:red">*</span></p>
+        <p>New Password:<span style="color:red">*</span></p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="passchange" action="/users/me/passchange">
+    <div class="text">
+        <input type="text" name="password" id="password" required/>
+        <input type="text" name="newpassword" id="newpassword" required/>
+    </div>
+
+    <div id="submit">
+        <input class="opts submitform" type="submit" value="Change"/>
+    </div>
+    </form>
+        </div>
+
+
+    </div>
+    {{>footer}}
+    {{!-- <script src="/js/uapp.js"></script> --}}
+    </script>
+
+
+</body>
+</html>
