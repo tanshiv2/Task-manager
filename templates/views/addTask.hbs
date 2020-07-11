@@ -48,6 +48,9 @@
 
    </div>
     {{>footer}}
+    <script>
+        document.getElementById('add').classList.add('active')
+    </script>
 
     <script>
         const myFalse = () => {
@@ -59,6 +62,10 @@
             dueDate.setAttribute('type', 'datetime-local')
             dueDate.setAttribute('name', 'due')
             dueDate.setAttribute('id', 'due')
+            let min = new Date()
+            let max = min.setFullYear(min.getFullYear()+5)
+            dueDate.setAttribute('min', min)
+            dueDate.setAttribute('max', max)
             const label = document.createElement('p')
             label.setAttribute('id', 'duelabel')
             label.textContent = 'Due date: '

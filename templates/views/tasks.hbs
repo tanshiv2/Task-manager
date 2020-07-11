@@ -14,19 +14,20 @@
     <div class="maincontent">
         {{>headerUser}}
     <div class="options" id="options">
-        <button class="opts" type="button"><a href="/tasks">All</a></button>
-        <button class="opts" type="button"><a href="/tasks?completed=false">Pending</a></button>
-        <button class="opts" type="button"><a href="/tasks?completed=true">Done</a></button>
+        <button class="opts choice" type="button"><a href="/tasks">All</a></button>
+        <button class="opts choice" type="button"><a href="/tasks?completed=false">Pending</a></button>
+        <button class="opts choice" type="button"><a href="/tasks?completed=true">Done</a></button>
     </div>
 
     <div class="tasks" id="display">
-        <p id="tasks">{{taskss}} </p>
+        <p id="tasks" style="color:black">{{taskss}} </p>
 
     </div>
 
    </div>
     {{>footer}}
 
+    <script>document.getElementById('tasksb').classList.add('active')</script>
     <script src="/js/app.js">
     </script>
 

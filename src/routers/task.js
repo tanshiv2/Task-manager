@@ -77,13 +77,13 @@ router.get('/tasks/:id',auth, async (req,res) => {
         if (!task){
             return res.status(400).send()
         }
-        res.send(task)
+        res.render('modifytask', {description:task.description, complete:task.completed, dueDate: task.due, id:_id})
     } catch (e) {
         res.status(500).send(e)
     }
 })
 
-router.patch('/tasks/:id', auth, async (req,res) => {
+router.patch('/tasks/:id', uploads.fields([]), auth, async (req,res) => {
 
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed', 'due']
@@ -94,16 +94,19 @@ router.patch('/tasks/:id', auth, async (req,res) => {
     }
 
     try{
+        console.log(req.body)
         const task = await Task.findOne({_id:req.params.id, owner: req.user._id})
+        console.log(task)
         if(!task){
             return res.status(404).send()
         }
         updates.forEach((update) => {
             task[update] = req.body[update]
+            console.log(update)
+            console.log(task[update])
         })
         task.save()
-        // console.log(task)
-        res.send(task)  
+        res.redirect(303,'/tasks')
     } catch (e) {
         res.status(400).send(e)
     }

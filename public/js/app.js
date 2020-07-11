@@ -6,7 +6,7 @@ const makeArr = (str) => {
     let arr = []
     while(str!=''){
         arr.push(JSON.parse(str.slice(str.indexOf('{'), str.indexOf('}')+1)))
-        str = str.substring(str.indexOf('}') + 2, str.length);
+        str = str.substring(str.indexOf('}') + 2, str.length)
     }
     return arr
 }
@@ -44,16 +44,22 @@ const timeCreated = (createdAt) => {
 }
 
 const dueDate = (due) => {
-    const dateTime = new Date(due)
+    var dateTime = new Date(due)
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const dueDate = dateTime.getDate() + ' ' + monthNames[dateTime.getMonth()]
+    var yearstring = JSON.stringify(dateTime)
+    yearstring = yearstring.substring(2,4)
+    const dueDate = dateTime.getDate() + ' ' + monthNames[dateTime.getMonth()] + '\'' + yearstring
     const set = new Date()
     set.setMonth(dateTime.getMonth())
     set.setDate(dateTime.getDate())
     // console.log(dueDate)
     // console.log('set' + set)
-    const dueTime = dateTime.getHours() + ':' + dateTime.getMinutes()
+    let minutes = dateTime.getMinutes()
+    if(dateTime.getMinutes() < 10){
+        minutes = '0'+ JSON.stringify(dateTime.getMinutes())
+    }
+    const dueTime = dateTime.getHours() + ':' + minutes
     // console.log(dueTime)
     return dueDate + ' ' + dueTime
 }
@@ -72,11 +78,12 @@ const makeDiv = (desc,completed,due,createdAt,id) => {
     field.textContent = desc
     left.appendChild(field)
 
-
+    if(due){
     var field = document.createElement('div')
     field.setAttribute('id', 'due')
     field.textContent = 'Due: ' + dueDate(due)
     left.appendChild(field)
+    }
 
     field = document.createElement('div')
     field.setAttribute('id', 'completed')
@@ -107,7 +114,7 @@ const makeDiv = (desc,completed,due,createdAt,id) => {
     update.setAttribute('id', id)
 
     anchor.setAttribute('href','')
-    anchor1.setAttribute('href','')
+    anchor1.setAttribute('href', '/tasks/' + id)
     anchor2.setAttribute('href','')
 
     anchor.setAttribute('id','update')
@@ -188,10 +195,8 @@ const applyAction = () => {
             } else if(this.src.endsWith("/images/markdone.png")){
                 fetch = true
                 return fetchpatch(fetch,this.id)
-            } 
-             else {
-                console.log('ye sahi hai')
-                console.log('donothing')
+            } else {
+                document.location.href= '/task/' + this.id
             }
         })
     }

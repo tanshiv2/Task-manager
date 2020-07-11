@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>My Task Manager</title>
+    <link rel="icon" href="">
+    <link rel="stylesheet" href="/css/styles.css">
+  
+</head>
+
+<body>
+    <div class="maincontent">
+        {{>headerUser}}
+
+        <div class="userinfo" id="display">
+        <p class="inner" id="titles">Modify task</p>
+    
+    <p id="description">{{description}}</p>
+    <p id="complete">{{complete}}</p>
+    <p id="dueDate">{{dueDate}}</p>
+    <p id="taskid">{{id}}</p>
+
+    <form method="POST" enctype="multipart/form-data" action="/tasks">       
+    <div class="labels">
+        <p>Description:<span style="color:red">*</span></p>
+    </div>
+    <div class="text">
+        <textarea name="description" cols="50" rows="10" value="{{description}}"></textarea>
+    </div>
+     <div class="labels">
+        <p>Is it complete ? </p>
+    </div>
+    <div class="labels yes">
+        <input type="radio" name="completed" value="true" onclick="myTrue()" id="yes"/>
+        <label for="true" id="true">Yes</label>
+    </div>
+    <div class="labels yes">
+        <input type="radio" name="completed" value="false" onclick="myFalse()" id="no"/>
+        <label for="false" id="false">No<br>
+    </div>
+
+    <div class="labels" id="duedate">
+    </div>
+    <div class="text" id="select">
+    </div>
+
+    <div id="submit" class="addtask">
+        <input class="opts submitform" type="submit" value="Add"/>
+    </div>
+    </form>  
+
+   </div>
+
+    {{>footer}}
+
+    <script>
+    const desc = document.getElementById("description").textContent
+    var comp = document.getElementById("complete").textContent
+    const duecurrent = document.getElementById("dueDate").textContent
+    const taskid = document.getElementById("taskid").textContent
+    document.getElementById("taskid").textContent = ''
+
+    const mainFunc = () => {
+        const desc = document.getElementById("description").textContent
+        document.getElementById("description").textContent = ''
+        document.querySelector('textarea').value = desc
+
+        var comp = document.getElementById("complete").textContent
+        document.getElementById("complete").textContent = ''
+
+        const rbs = document.querySelectorAll('input[name="completed"]')
+        console.log(rbs)
+        
+        if(comp == 'true'){
+            document.getElementById('yes').checked = true
+            myTrue()
+        } else { 
+            document.getElementById('no').checked = true
+            myFalse()
+        }
+    }
+
+        const myFalse = () => {
+            if(!document.getElementById('due')){
+            const lastlabel = document.getElementById('duedate')
+            const lastinput = document.getElementById('select')
+            const dueDate = document.createElement('input')
+            dueDate.setAttribute('type', 'datetime-local')
+            dueDate.setAttribute('name', 'due')
+            dueDate.setAttribute('id', 'due')
+            let max = new Date()
+            max = max.setFullYear(max.getFullYear() + 5)
+            dueDate.setAttribute("min", new Date())
+            dueDate.setAttribute("max", max)
+
+            const due = document.getElementById("dueDate").textContent
+
+            document.getElementById("dueDate").textContent = ''
+
+            var subdate = due.substring(4,21)
+
+            const current = document.createElement('p')
+            current.id = 'currentdue'
+            current.textContent = 'Change your task due date ' + subdate
+        
+            const label = document.createElement('p')
+            label.setAttribute('id', 'duelabel')
+            label.textContent = 'Due date: '
+            
+            lastlabel.appendChild(label)
+            lastinput.appendChild(dueDate)
+            lastinput.appendChild(current)
+        }
+    }
+
+        const myTrue = () => {
+            const due = document.getElementById("dueDate").textContent
+            document.getElementById("dueDate").textContent = ''
+            if(document.getElementById('due')){
+                document.getElementById('duedate').removeChild(document.getElementById('duelabel'))
+                document.getElementById('select').removeChild(document.getElementById('due'))
+                document.getElementById('select').removeChild(document.getElementById('currentdue'))
+            }
+        }
+
+        mainFunc()
+
+        const formFunc = () => {
+            const patchform = document.querySelector('form')
+            patchform.addEventListener('submit', (e) => {
+                e.preventDefault()
+
+                const rbs = document.querySelectorAll('input[name="completed"]')
+                console.log(rbs)
+                var selectedValue
+                for (const rb of rbs) {
+                    if (rb.checked) {
+                        var completed = rb.value;
+                        console.log(selectedValue)
+                        break;
+                    }
+                }
+
+                const description = document.querySelector('[name="description"]').value
+
+                var due
+                if(document.getElementById('due')){
+                    due = document.querySelector('[name="due"]').value
+                } else{
+                    due = false
+                }
+
+                if(!due){
+                fetch('/tasks/' + taskid, {method:'PATCH', body: JSON.stringify({
+                description,
+                completed
+                }),
+                headers: {
+                "Content-type": "application/json; charset=UTF-8"
+                }})
+                window.location.href = '/tasks'
+                } else {
+                    fetch('/tasks/' + taskid, {method:'PATCH', body: JSON.stringify({
+                description,
+                completed,
+                due
+                }),
+                headers: {
+                "Content-type": "application/json; charset=UTF-8"
+                }})
+                window.location.href = '/tasks'   
+            }
+            })
+        }
+        formFunc()
+
+    </script>
+</body>
+</html>

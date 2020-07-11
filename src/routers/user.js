@@ -67,7 +67,7 @@ router.post('/users/login', uploads.fields([]), async (req,res) => {
         res.redirect('/tasks')
 
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).render('login')
     }
 })
 
@@ -103,7 +103,7 @@ router.post('/users/logout', auth, async (req,res) => {
         })
         await req.user.save()
         res.clearCookie('jwtToken');
-        res.send({success: 'Logged out successfuly'})
+        res.render('login', {success: 'Logged out successfuly'})
         // res.redirect('/users/login')
     } catch (e) {
         res.send(500).send()
