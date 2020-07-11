@@ -25,6 +25,12 @@ app.use(express.static(path.join(__dirname,'../public')))
 app.use(userRouter)
 app.use(taskRouter)
 
+app.get('*', (req,res) => {
+    res.render('404', { 
+        error: 'Page not found'
+    })
+})
+
 
 app.listen(port,() => {
     console.log('Server is up on port' + port)

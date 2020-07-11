@@ -26,8 +26,8 @@
     <div class="text">
         <input type="email" name="email" required/>
         <input type="text" name="name" required/>
-        <input type="text" name="age" />
-        <input type="text" name="password" required/>
+        <input type="number" name="age" min="0" max="115" />
+        <input type="text" name="password" minlength="7" required/>
     </div>
 
     <p>Already a user? <a href="/login" style="color:#800000"><u>Login</u></a></p>

@@ -13,10 +13,7 @@ router.use(cookieParser())
 let uploads = multer()
 
 router.get('',(req, res) => {
-    res.render('index', {
-        title: 'Task Manager',
-        name: 'Shivangi Tanwar'
-    })
+    res.redirect('/login')
 })
 
 //Create user
@@ -43,7 +40,9 @@ router.post('/users', uploads.fields([]), async (req,res) => {
         }
     }      
     catch (e) {
-        res.status(400).send(e)
+        // res.status(400).send(e)
+        res.send(e.message)
+        // res.render('signup', {})
     }
 })
 
@@ -67,7 +66,8 @@ router.post('/users/login', uploads.fields([]), async (req,res) => {
         res.redirect('/tasks')
 
     } catch (e) {
-        res.status(400).render('login')
+        res.status(400).render('login', {errormsg: e.message})
+        // res.send(e)
     }
 })
 
@@ -103,7 +103,8 @@ router.post('/users/logout', auth, async (req,res) => {
         })
         await req.user.save()
         res.clearCookie('jwtToken');
-        res.render('login', {success: 'Logged out successfuly'})
+        // res.redirect('login', {success: 'Logged out successfuly'})
+        res.redirect('/login')
         // res.redirect('/users/login')
     } catch (e) {
         res.send(500).send()
@@ -221,8 +222,24 @@ router.post('/users/me/passchange', uploads.fields([]), auth, async (req,res) =>
         console.log(user)
         res.status(200).redirect('/users/me')
     } catch (e) {
-        res.status(400).send(e)
+        // res.status(400).send(e)
+        res.redirect('/users/me')
     }
  })
+
+ router.get('/users/*', (req,res) => {
+
+    res.render('404u', { 
+        error: 'User page not found'
+    })
+})
+
+router.get('*', auth, (req,res) => {
+
+    res.render('404u', { 
+        error: 'Page not found'
+    })
+})
+
 
 module.exports = router

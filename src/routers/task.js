@@ -79,7 +79,7 @@ router.get('/tasks/:id',auth, async (req,res) => {
         }
         res.render('modifytask', {description:task.description, complete:task.completed, dueDate: task.due, id:_id})
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).render('404u', {error: 'Task does not exist!'})
     }
 })
 
@@ -124,6 +124,13 @@ router.delete('/tasks/:id', auth, async (req,res) => {
     catch (e){
         res.status(500).send(e)
     }
+})
+
+router.get('*', auth, (req,res) => {
+
+    res.render('404u', { 
+        error: 'Page not found'
+    })
 })
 
 module.exports = router

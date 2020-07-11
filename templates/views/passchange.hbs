@@ -24,7 +24,7 @@
     <form method="POST" enctype="multipart/form-data" id="passchange" action="/users/me/passchange">
     <div class="text">
         <input type="text" name="password" id="password" required/>
-        <input type="text" name="newpassword" id="newpassword" required/>
+        <input type="text" name="newpassword" id="newpassword" minlength="7" required/>
     </div>
 
     <div id="submit">
