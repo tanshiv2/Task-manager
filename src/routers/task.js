@@ -126,11 +126,19 @@ router.delete('/tasks/:id', auth, async (req,res) => {
     }
 })
 
+router.get('/tasks/*', auth, (req,res) => {
+
+    res.render('404u', { 
+        error: 'Page not found'
+    })
+})
+
 router.get('*', auth, (req,res) => {
 
     res.render('404u', { 
         error: 'Page not found'
     })
 })
+
 
 module.exports = router

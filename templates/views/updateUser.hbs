@@ -4,7 +4,7 @@
 
 <head>
     <title>My Task Manager</title>
-    <link rel="icon" href="">
+    <link rel="icon" href="/images/task.jpg">
     <link rel="stylesheet" href="/css/styles.css">
   
 </head>
@@ -13,14 +13,29 @@
     <div class="maincontent">
         {{>headerUser}}
 
+    <div class="userinfo" id="display">
+        <p class="inner" id="titles">Update Profile</p>
+
+    <div class="labels">
+       
+        <p>Name:</p>
+        <p>Email:</p>
+        <p>Age:</p>
+        
+    </div>
+
+
     <form enctype="multipart/form-data" action="/users/me" id="updateUser">
-        <p>Name: </p> 
+    <div class="text">
         <input type="text" name="description" value={{user}} id="uname"/>
-        <p>Email: </p> 
-        <input type="text" name="description" value={{email}} id="uemail" />
-        <p>Age: </p> 
-        <input type="text" name="description" value={{age}} id="uage"/>
-        <input type="submit" value="Submit"/>
+        <input type="email" name="email" value={{email}} id="uemail" />
+        <input type="number" name="age" value={{age}} min="0" max="115" id="uage"/>
+    </div>
+        
+    <div id="submit">
+        <input class="opts submitform" type="submit" value="Submit"/>
+    </div>
+
     </form>  
 
    </div>

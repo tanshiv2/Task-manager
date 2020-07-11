@@ -335,3 +335,21 @@ hr{
     margin-top:4%;
 }
 
+#YES{
+    margin-left: 35%;
+    color:black;
+}
+
+#NO{
+    margin-left: 10%;
+    color:black;
+}
+
+#confirm{
+    margin-left:10%;
+    margin-bottom:5%;
+}
+
+#deleteyn{
+    color:black;
+}

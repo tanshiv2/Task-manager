@@ -8,6 +8,8 @@ const sharp = require('sharp')
 const router = new express.Router()
 const cookieParser = require('cookie-parser')
 const { request } = require('http')
+const { sendWelcomeEmail } = require('../emails/account') 
+const { sendCancelEmail } = require('../emails/account')
 router.use(cookieParser())
 
 let uploads = multer()
@@ -36,6 +38,7 @@ router.post('/users', uploads.fields([]), async (req,res) => {
         if(created){
         const token = await created.generateAuthToken()
         await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
+        sendWelcomeEmail(user.email,user.name)
         res.status(201).redirect('/tasks')
         }
     }      
@@ -136,8 +139,7 @@ router.patch('/users/me', auth, async (req,res) => {
             req.user[update] = req.body[update]
         })
 
-        await req.user.save()
-        res.redirect('/users/me')
+        await req.user.save()        
     } catch (e) {
         res.status(400).send(e)
     }
@@ -145,9 +147,11 @@ router.patch('/users/me', auth, async (req,res) => {
 
 router.delete('/users/me', auth, async (req,res) => {
     try{
+        sendCancelEmail(req.user.email, req.user.name)
         await req.user.remove()
         // res.send(user)
-        res.redirect('/users/me')
+        await res.clearCookie('jwtToken')
+        res.redirect('/signup')
     } catch (e) {
         res.status(500).send(e)
     }
@@ -227,19 +231,19 @@ router.post('/users/me/passchange', uploads.fields([]), auth, async (req,res) =>
     }
  })
 
- router.get('/users/*', (req,res) => {
+ router.get('/users/*', auth,(req,res) => {
 
     res.render('404u', { 
         error: 'User page not found'
     })
 })
 
-router.get('*', auth, (req,res) => {
+// router.get('*', auth, (req,res) => {
 
-    res.render('404u', { 
-        error: 'Page not found'
-    })
-})
+//     res.render('404u', { 
+//         error: 'Page not found'
+//     })
+// })
 
 
 module.exports = router

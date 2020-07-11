@@ -1,22 +1,14 @@
-const formU = document.querySelector('form')
-
-const updater = () => {
-    if(formU){
-    if(formU.id == 'updateUser'){
-        updateUser()
-    } else {
-        
-    }
-}  
-
-}
 
 const updateUser = () => {
+    const formU = document.getElementById("updateUser")
+    if (formU){
     formU.addEventListener('submit', (e) => {
+
+    e.preventDefault()
 
     const uname = document.getElementById('uname').value
     const uemail = document.getElementById('uemail').value
-    const uage = document.getElementById('uage').value
+    var uage = document.getElementById('uage').value
 
     fetch('/users/me', {method:'PATCH', body: JSON.stringify({
         name: uname,
@@ -26,10 +18,12 @@ const updateUser = () => {
         headers: {
         "Content-type": "application/json; charset=UTF-8"
         }}).then(response => response.json())
+        window.location.href='/users/me'
     })
 }
+}
 
-updater()
+updateUser()
 
 const deleter = () => {
     const deleteAcc = document.getElementById("delete")
@@ -48,6 +42,7 @@ const deleter = () => {
         var label = document.createElement('label')
         label.htmlFor = 'YES'
         label.textContent = 'Yes'
+        label.id='deleteyn'
         display.appendChild(yes)
         display.appendChild(label)
         const no = document.createElement('input')
@@ -57,8 +52,9 @@ const deleter = () => {
         no.name = 'reply'
         display.appendChild(no)
         label = document.createElement('label')
-        label.htmlFor = 'NO';
+        label.htmlFor = 'NO'
         label.textContent = 'No'
+        label.id='deleteyn'
         display.appendChild(label)
         const confirm = document.createElement('button')
         confirm.value = 'Confirm'
@@ -90,20 +86,15 @@ const checkClick = () => {
         }
         if(selectedValue == 'YES'){
         fetch('/users/me', { method: 'DELETE'})
-        } 
+        window.location.href='/signup'
+        } else {
+            window.location.href='/users'
+        }
+        
     })}
 }
 
 deleter()
-
-// const patchavatar = () => { 
-//     fetch('/users/me/avatar' + id, {method:'PATCH', body: JSON.stringify({
-//         completed: bool
-//         }),
-//         headers: {
-//         "Content-type": "application/json; charset=UTF-8"
-//         }}).then(response => response.json())
-//     }
 
 
 const updatephoto = () => {
