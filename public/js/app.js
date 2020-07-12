@@ -48,7 +48,7 @@ const dueDate = (due) => {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var yearstring = JSON.stringify(dateTime)
-    yearstring = yearstring.substring(2,4)
+    yearstring = yearstring.substring(3,5)
     const dueDate = dateTime.getDate() + ' ' + monthNames[dateTime.getMonth()] + '\'' + yearstring
     const set = new Date()
     set.setMonth(dateTime.getMonth())
