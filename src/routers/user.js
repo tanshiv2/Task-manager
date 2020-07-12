@@ -149,9 +149,8 @@ router.delete('/users/me', auth, async (req,res) => {
     try{
         sendCancelEmail(req.user.email, req.user.name)
         await req.user.remove()
-        // res.send(user)
-        await res.clearCookie('jwtToken')
-        res.redirect('/users')
+        res.clearCookie('jwtToken')
+        // res.redirect('/users')
     } catch (e) {
         res.status(500).send(e)
     }

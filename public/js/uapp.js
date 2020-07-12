@@ -86,9 +86,9 @@ const checkClick = () => {
         }
         if(selectedValue == 'YES'){
         fetch('/users/me', { method: 'DELETE'})
-        window.location.href='/signup'
+        window.location.href='/users'
         } else {
-            window.location.href='/users'
+            window.location.href='/users/me'
         }
         
     })}
