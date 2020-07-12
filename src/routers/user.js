@@ -151,7 +151,7 @@ router.delete('/users/me', auth, async (req,res) => {
         await req.user.remove()
         // res.send(user)
         await res.clearCookie('jwtToken')
-        res.redirect('/signup')
+        res.redirect('/users')
     } catch (e) {
         res.status(500).send(e)
     }
@@ -237,13 +237,5 @@ router.post('/users/me/passchange', uploads.fields([]), auth, async (req,res) =>
         error: 'User page not found'
     })
 })
-
-// router.get('*', auth, (req,res) => {
-
-//     res.render('404u', { 
-//         error: 'Page not found'
-//     })
-// })
-
 
 module.exports = router
