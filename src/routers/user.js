@@ -37,7 +37,7 @@ router.post('/users', uploads.fields([]), async (req,res) => {
         const created = await user.save()
         if(created){
         const token = await created.generateAuthToken()
-        await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
+        await res.cookie('jwtToken', token, { expires:new Date(Date.now() + 18000000), httpOnly: true });
         sendWelcomeEmail(user.email,user.name)
         res.status(201).redirect('/tasks')
         }
@@ -64,7 +64,7 @@ router.post('/users/login', uploads.fields([]), async (req,res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
-        await res.cookie('jwtToken', token, { maxAge: 18000000, httpOnly: true });
+        await res.cookie('jwtToken', token, { expires:new Date(Date.now() + 18000000), httpOnly: true });
         console.log(req.cookies.jwtToken)
         res.redirect('/tasks')
 
@@ -149,8 +149,13 @@ router.delete('/users/me', auth, async (req,res) => {
     try{
         sendCancelEmail(req.user.email, req.user.name)
         await req.user.remove()
-        res.clearCookie('jwtToken')
-        // res.redirect('/users')
+        
+
+        // res.clearCookie('jwtToken', {domain: 'localhost:3000', path:'/'});
+        console.log(req.cookies.jwtToken)
+        // await res.clearCookie('jwtToken');   
+        await res.cookie('jwtToken', '', {expires: new Date(0), maxAge:0})
+        res.redirect(200,'/')
     } catch (e) {
         res.status(500).send(e)
     }

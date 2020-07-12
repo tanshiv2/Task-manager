@@ -85,8 +85,8 @@ const checkClick = () => {
             }
         }
         if(selectedValue == 'YES'){
-        fetch('/users/me', { method: 'DELETE'})
-        window.location.href='/users'
+        fetch('/users/me', { method: 'DELETE',credentials: 'same-origin'})
+        window.location.href='/login'
         } else {
             window.location.href='/users/me'
         }
@@ -116,11 +116,6 @@ const updatephoto = () => {
             form.appendChild(selectfile)
             form.appendChild(submit)
             display.appendChild(form)
-
-            // form.addEventListener('submit', (e) => {
-            //     e.preventDefault()
-            //     patchavatar()
-            
         })
     }
 }
